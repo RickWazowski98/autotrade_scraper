@@ -4,8 +4,11 @@ import multiprocessing
 import datetime
 import math
 import json
+import logging
 from multiprocessing.pool import ThreadPool
 from config import auth_to_sheet, get_proxy, send_mail, HEADERS, AUTO_TRADE_TABLE, CRITERIES_TABLE
+
+logging.basicConfig(level=logging.DEBUG)  # filename='autotrader.log',
 
 
 class AutoTraderScraper():
@@ -20,7 +23,7 @@ class AutoTraderScraper():
     def get_cars(self, start_year, end_year, maker, model, seller_type, condition, keywords=''):
         links = []
         item_on_page = 1000
-        url = f'{self.base_url}/{maker}/{model}/on/milton/'
+        url = f'{self.base_url}/{maker.lower()}/{model.lower()}/on/milton/'
         payload = {
             'rcp': f'{item_on_page}',
             'rsc': str(0), #page number
@@ -45,13 +48,17 @@ class AutoTraderScraper():
         session.mount('http://', adapter)
         session.proxies.update(get_proxy())
         response = session.get(url, headers=HEADERS, params=payload)
+        logging.debug('response status code: {}'.format(response.status_code))
         soup = bs4.BeautifulSoup(response.text, 'html.parser')
         cars_count = soup.find('div', {'class': 'results-count-wrapper'}).find('span', {'id': 'sbCount'}).text
-        page_count = math.ceil(int(cars_count)/15)
-        j_data = soup.find('div', {'class': 'col-xs-12 disable-on-search'}).find('script', {'type': 'application/ld+json'})
-        json_data = json.loads(str(j_data).replace('</script>', '').replace('<script type="application/ld+json">', '').strip())
-        for data in json_data['offers']['offers']:
-            links.append('https://www.autotrader.ca'+ data['url'])
+        if int(cars_count) != 0:
+            logging.debug('cars url: {}'.format(response.url))
+            logging.debug('cars was find: {}'.format(cars_count))
+            page_count = math.ceil(int(cars_count)/15)
+            j_data = soup.find('div', {'class': 'col-xs-12 disable-on-search'}).find('script', {'type': 'application/ld+json'})
+            json_data = json.loads(str(j_data).replace('</script>', '').replace('<script type="application/ld+json">', '').strip())
+            for data in json_data['offers']['offers']:
+                links.append('https://www.autotrader.ca'+ data['url'])
 
         return links
 
