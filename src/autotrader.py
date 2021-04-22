@@ -8,7 +8,7 @@ import logging
 from multiprocessing.pool import ThreadPool
 from config import auth_to_sheet, get_proxy, send_mail, HEADERS, AUTO_TRADE_TABLE, CRITERIES_TABLE
 
-logging.basicConfig(level=logging.DEBUG)  # filename='autotrader.log',
+logging.basicConfig(level=logging.DEBUG, filename='autotrader.log')
 
 
 class AutoTraderScraper():
@@ -49,6 +49,8 @@ class AutoTraderScraper():
         session.proxies.update(get_proxy())
         response = session.get(url, headers=HEADERS, params=payload)
         logging.debug('response status code: {}'.format(response.status_code))
+        logging.debug("response url: {}".format(response.url))
+        logging.debug("\n Maker:{} \n Model:{}".format(maker, model))
         soup = bs4.BeautifulSoup(response.text, 'html.parser')
         cars_count = soup.find('div', {'class': 'results-count-wrapper'}).find('span', {'id': 'sbCount'}).text
         if int(cars_count) != 0:

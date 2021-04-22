@@ -9,7 +9,7 @@ from multiprocessing.pool import ThreadPool
 from config import auth_to_sheet, get_proxy, send_mail, KJ_HEADERS, KIJIJI_AUTO_TABLE, CRITERIES_TABLE
 from tools import kj_get_models
 
-logging.basicConfig(level=logging.DEBUG)  # filename='autotrader.log',
+logging.basicConfig(level=logging.DEBUG, filename='kijujuauto.log')
 
 
 class KijijiAutoScraper():
@@ -53,12 +53,13 @@ class KijijiAutoScraper():
         session.mount('http://', adapter)
         session.proxies.update(get_proxy())
         resp = session.get(url, headers=KJ_HEADERS, params=payload)
-        # print(resp.text)
+        logging.debug('response status code: {}'.format(resp.status_code))
+        logging.debug("response url: {}".format(resp.url))
+        logging.debug("\n Maker:{} \n Model:{}".format(maker, model))
         j_data = json.loads(resp.text)
         for i in j_data['listings']['items']:
             link = f'{self.base_url}/{maker.lower().replace(" ","-")}/{model.lower().replace(" ","-")}/{condition.lower()}/#vip={i["id"]}'
             links.append(link)
-            logging.debug(f'link was add {link}')
         
         return links
 
@@ -97,6 +98,7 @@ class KijijiAutoScraper():
                             self.result_sheet.insert_rows(1, values=[link, f'{now.year}/{now.month}/{now.day}-{now.hour}:{now.minute}'], inherit=True)
                             link_for_mail.append(link)
                     if link_for_mail:
+                        logging.debug(f'New links was found: {len(link_for_mail)}')
                         mail_text = 'New links have been added to the table, please check out:\n' + '\n'.join([f'{ref}\n' for ref in link_for_mail])
                         send_mail(mail_text)
             else:
