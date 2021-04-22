@@ -8,7 +8,12 @@ import logging
 from multiprocessing.pool import ThreadPool
 from config import auth_to_sheet, get_proxy, send_mail, HEADERS, AUTO_TRADE_TABLE, CRITERIES_TABLE
 
-logging.basicConfig(level=logging.DEBUG, filename='autotrader.log')
+logging.basicConfig(
+    level=logging.DEBUG,
+    filename='autotrader.log',
+    format='%(asctime)s.%(msecs)03d %(levelname)s %(module)s - %(funcName)s: %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+    )
 
 
 class AutoTraderScraper():

@@ -9,7 +9,12 @@ from multiprocessing.pool import ThreadPool
 from config import auth_to_sheet, get_proxy, send_mail, KJ_HEADERS, KIJIJI_AUTO_TABLE, CRITERIES_TABLE
 from tools import kj_get_models
 
-logging.basicConfig(level=logging.DEBUG, filename='kijujuauto.log')
+logging.basicConfig(
+    level=logging.DEBUG,
+    filename='kijijiauto.log',
+    format='%(asctime)s.%(msecs)03d %(levelname)s %(module)s - %(funcName)s: %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+    )
 
 
 class KijijiAutoScraper():

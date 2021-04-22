@@ -2,4 +2,4 @@
 . "venv/bin/activate"
 
 python autotrader.py
-python kijujuauto.py
+python kijijiauto.py
