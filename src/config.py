@@ -111,3 +111,16 @@ KJ_HEADERS = {
     'x-search-source': 'srp',
     'x-track-recent-search': 'true'
 }
+
+KJ_CAR_MAKERS = {
+   "Ford": "",
+   "RAM": "267",
+   "Chevrolet": "",
+   "Cadillac": "",
+   "Jeep": "",
+   "Dodge": "",
+}
+
+KJ_CAR_MODELS = {
+
+}

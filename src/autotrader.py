@@ -23,7 +23,7 @@ class AutoTraderScraper():
     def get_cars(self, start_year, end_year, maker, model, seller_type, condition, keywords=''):
         links = []
         item_on_page = 1000
-        url = f'{self.base_url}/{maker.lower()}/{model.lower()}/on/milton/'
+        url = f'{self.base_url}/{maker.lower().replace(" ","-")}/{model.lower().replace(" ","-")}/on/milton/'
         payload = {
             'rcp': f'{item_on_page}',
             'rsc': str(0), #page number
@@ -99,7 +99,6 @@ class AutoTraderScraper():
                     if link_for_mail:
                         mail_text = 'New links have been added to the table, please check out:\n' + '\n'.join([f'{ref}\n' for ref in link_for_mail])
                         send_mail(mail_text)
-
             else:
                 print("nothing new")
 
