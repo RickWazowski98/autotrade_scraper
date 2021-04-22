@@ -55,7 +55,7 @@ class KijijiAutoScraper():
         resp = session.get(url, headers=KJ_HEADERS, params=payload)
         logging.debug('response status code: {}'.format(resp.status_code))
         logging.debug("response url: {}".format(resp.url))
-        logging.debug("\n Maker:{} \n Model:{}".format(maker, model))
+        logging.debug("\n Maker:{} \n Model:{} \n Keyword: {}".format(maker, model, keywords))
         j_data = json.loads(resp.text)
         for i in j_data['listings']['items']:
             link = f'{self.base_url}/{maker.lower().replace(" ","-")}/{model.lower().replace(" ","-")}/{condition.lower()}/#vip={i["id"]}'

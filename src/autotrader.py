@@ -50,7 +50,7 @@ class AutoTraderScraper():
         response = session.get(url, headers=HEADERS, params=payload)
         logging.debug('response status code: {}'.format(response.status_code))
         logging.debug("response url: {}".format(response.url))
-        logging.debug("\n Maker:{} \n Model:{}".format(maker, model))
+        logging.debug("\n Maker:{} \n Model:{} \n Keyword: {}".format(maker, model, keywords))
         soup = bs4.BeautifulSoup(response.text, 'html.parser')
         cars_count = soup.find('div', {'class': 'results-count-wrapper'}).find('span', {'id': 'sbCount'}).text
         if int(cars_count) != 0:
