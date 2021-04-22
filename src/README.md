@@ -6,5 +6,5 @@ Create virtualenv using command "virtualenv venv"
 To activate venv, type - "source venv/bin/activate"
 Install requirements from the file "requirements.txt" using command "pip install -r requirements.txt"
 These steps are all you need to run the app with command:
-"python autotrade.py && python kijujuauto.py" or "bash sh_run.sh" - to runing app once
-"
+"python autotrade.py && python kijujuauto.py" or "bash sh_run.sh" - to running app once
+"python loop_run.py" - to running app every 10 minutes
